@@ -67,7 +67,10 @@ pipeline {
 				}
 				
 				post{
-					build wait: false, job: 'DeployHostPipeline'
+				  always {
+						build wait: false, job: 'DeployHostPipeline'
+				  }
+					
 				}
 		}
     }
