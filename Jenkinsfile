@@ -65,6 +65,10 @@ pipeline {
 				steps{
 					nexusArtifactUploader artifacts: [[artifactId: 'webapp', classifier: '', file: 'target/webapptest.war', type: 'war']], credentialsId: 'nexus', groupId: 'com.awstechguide', nexusUrl: 'localhost:8081/nexus', nexusVersion: 'nexus2', protocol: 'http', repository: 'webapp', version: '1.0.0'
 				}
+				
+				post{
+					build wait: false, job: 'DeployHostPipeline'
+				}
 		}
     }
 }
