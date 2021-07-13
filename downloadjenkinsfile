@@ -15,7 +15,7 @@ node(){
        if (env.status == '300') {
           sh "echo Deployment status is ${env.status}"
         } else {
-          sh "echo Deployment status is ${env.status}"
+          sh "echo Deployment status is not 200"
           emailext body: 'Deployment has failed .View Results at $BUILD_URL to find out errors. <br><br> ${CHANGES} <br><br> -------------------------------------------------- <br>${BUILD_LOG, maxLines=100, escapeHtml=false}', 
 							to: "pradi.csp@gmail.com", 
 							subject: 'Deployment has failed in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER'
