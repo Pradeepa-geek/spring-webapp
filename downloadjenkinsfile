@@ -18,7 +18,8 @@ node(){
           sh "echo Deployment status is ${env.status}"
           emailext body: 'Deployment has failed .View Results at $BUILD_URL to find out errors. <br><br> ${CHANGES} <br><br> -------------------------------------------------- <br>${BUILD_LOG, maxLines=100, escapeHtml=false}', 
 							to: "pradi.csp@gmail.com", 
-							subject: 'Sonar Analysis has failed in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER'
+							subject: 'Deployment has failed in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER'
+	  error('Marking the build failed')
          }
    }
 
