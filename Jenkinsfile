@@ -63,7 +63,7 @@ pipeline {
 		
 		stage('Upload Artfacts to Nexus') {
 				steps{
-					nexusArtifactUploader artifacts: [[artifactId: 'webapp', classifier: '', file: 'target/webapptest.war', type: 'war']], credentialsId: 'nexus', groupId: 'com.awstechguide', nexusUrl: 'localhost:8081/nexus/', nexusVersion: 'nexus3', protocol: 'http', repository: 'http://localhost:8081/nexus/content/repositories/webapp', version: '1.0.0'
+					nexusArtifactUploader artifacts: [[artifactId: 'webapp', classifier: '', file: 'target/webapptest.war', type: 'war']], credentialsId: 'nexus', groupId: 'com.awstechguide', nexusUrl: 'localhost:8081/nexus/', nexusVersion: 'nexus3', protocol: 'http', repository: 'http://localhost:8081/repositories/webapp', version: '1.0.0'
 				}
 		}
     }
