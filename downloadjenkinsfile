@@ -1,8 +1,4 @@
 node(){
-
-    environment {
-        EMAIL_TO = 'pradi.csp@gmail.com'
-    }
     
     stage('Download Artifact from Nexus'){
        sh "wget --user=admin --password=admin123 http://localhost:8081/nexus/content/repositories/webapp/com/awstechguide/webapp/1.0.0/webapp-1.0.0.war"
@@ -21,7 +17,7 @@ node(){
         } else {
           sh "echo Deployment status is ${env.status}"
           emailext body: 'Deployment has failed .View Results at $BUILD_URL to find out errors. <br><br> ${CHANGES} <br><br> -------------------------------------------------- <br>${BUILD_LOG, maxLines=100, escapeHtml=false}', 
-							to: "${EMAIL_TO}", 
+							to: "pradi.csp@gmail.com", 
 							subject: 'Sonar Analysis has failed in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER'
          }
    }
