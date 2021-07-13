@@ -16,10 +16,10 @@ node(){
        CMD = "curl --write-out %{http_code} --silent --output /dev/null http://localhost:9090/webapp-1.0.0/"
        sh "${CMD} > commandResult"
        env.status = readFile('commandResult').trim()
-       if (env.status == '200') {
-          sh "echo Build status is ${env.status}"
+       if (env.status == '300') {
+          sh "echo Deployment status is ${env.status}"
         } else {
-          sh "echo Build status is ${env.status}"
+          sh "echo Deployment status is ${env.status}"
           emailext body: 'Deployment has failed .View Results at $BUILD_URL to find out errors. <br><br> ${CHANGES} <br><br> -------------------------------------------------- <br>${BUILD_LOG, maxLines=100, escapeHtml=false}', 
 							to: "${EMAIL_TO}", 
 							subject: 'Sonar Analysis has failed in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER'
