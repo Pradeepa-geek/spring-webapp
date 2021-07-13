@@ -2,6 +2,9 @@ node(){
     stage('Download Artifact from Nexus'){
        sh "wget --user=admin --password=admin123 http://localhost:8081/nexus/content/repositories/webapp/com/awstechguide/webapp/1.0.0/webapp-1.0.0.war"
    }
-
+   stage('Deploy war file into tomcat'){
+       sh "sudo /opt/tomcat/shutdown.sh"
+       sh "sudo cp -avr webapp-1.0.0.war /opt/tomcat/webapps/"
+   }
 
 }
