@@ -1,4 +1,9 @@
 node(){
+
+    environment {
+        EMAIL_TO = 'pradi.csp@gmail.com'
+    }
+    
     stage('Download Artifact from Nexus'){
        sh "wget --user=admin --password=admin123 http://localhost:8081/nexus/content/repositories/webapp/com/awstechguide/webapp/1.0.0/webapp-1.0.0.war"
    }
@@ -6,9 +11,19 @@ node(){
        sh "sudo /opt/tomcat/bin/shutdown.sh"
        sh "sudo cp -avr webapp-1.0.0.war /opt/tomcat/webapps/"
        sleep(time:5,unit:"SECONDS") 
-       sh "sudo /opt/tomcat/bin/catalina.sh run"
-       sleep(time:100,unit:"SECONDS")
-       
+       sh "sudo /opt/tomcat/bin/startup.sh"
+       sleep(time:40,unit:"SECONDS")
+       CMD = "curl --write-out %{http_code} --silent --output /dev/null http://localhost:9090/webapp-1.0.0/"
+       sh "${CMD} > commandResult"
+       env.status = readFile('commandResult').trim()
+       if (env.status == '200') {
+          sh "echo Build status is ${env.status}"
+        } else {
+          sh "echo Build status is ${env.status}"
+          emailext body: 'Deployment has failed .View Results at $BUILD_URL to find out errors. <br><br> ${CHANGES} <br><br> -------------------------------------------------- <br>${BUILD_LOG, maxLines=100, escapeHtml=false}', 
+							to: "${EMAIL_TO}", 
+							subject: 'Sonar Analysis has failed in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER'
+         }
    }
 
 }
