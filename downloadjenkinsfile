@@ -12,7 +12,7 @@ node('QA_OWNER'){
        CMD = "curl --write-out %{http_code} --silent --output /dev/null http://localhost:9090/webapp-1.0.0/"
        sh "${CMD} > commandResult"
        env.status = readFile('commandResult').trim()
-       if (env.status == '300') {
+       if (env.status == '200') {
           sh "echo Deployment status is ${env.status}"
         } else {
           sh "echo Deployment status is not 200"
