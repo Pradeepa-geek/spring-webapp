@@ -22,7 +22,6 @@ pipeline {
                 // failed, record the test results and archive the jar file.
                 success {
                     junit '**/target/surefire-reports/TEST-*.xml'
-                    archiveArtifacts 'target/*.war'
                 }
 				failure {
 						emailext body: 'View Results at $BUILD_URL to find out errors. <br><br> ${CHANGES} <br><br> -------------------------------------------------- <br>${BUILD_LOG, maxLines=100, escapeHtml=false}', 
@@ -54,11 +53,17 @@ pipeline {
 				     timeout(time: 1, unit: 'HOURS') {
 							def qg = waitForQualityGate()
 							if (qg.status != 'OK') {
-								error "Pipeline aborted due to quality gate failure: ${qg.status}"
+							emailext body: 'Sonar Analysis is here .View Results at $BUILD_URL to find out errors. <br><br> ${CHANGES} <br><br> -------------------------------------------------- <br>${BUILD_LOG, maxLines=100, escapeHtml=false}', 
+							to: "${EMAIL_TO}", 
+							subject: 'Sonar Analysis has failed in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER'
+							error "Pipeline aborted due to quality gate failure: ${qg.status}"
 							}
 						}
 				 }
 				}
+				success {
+					archiveArtifacts 'target/*.war'
+                }
 			}
 		}
     }
